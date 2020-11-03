@@ -153,4 +153,26 @@ public class AddressBookFileService {
 		return this.contactList;
 	}
 
+	public void updatePersonsPhone(String name, long phone) throws DatabaseException {
+		int result = addressBookDB.updatePersonsData(name, phone);
+		if (result == 0)
+			return;
+		this.contactList = addressBookDB.readData();
+		Person contact = this.getContact(name);
+		if (contact != null)
+			contact.setPhoneNumber(phone);
+	}
+
+	private Person getContact(String name) {
+		Person contact = this.contactList.stream().filter(contactData -> contactData.getName().equals(name)).findFirst()
+				.orElse(null);
+		return contact;
+	}
+
+	public boolean checkContactDataSync(String name) throws DatabaseException {
+		List<Person> employeeList = addressBookDB.getContactFromDatabase(name);
+		return employeeList.get(0).equals(getContact(name));
+
+	}
+
 }
