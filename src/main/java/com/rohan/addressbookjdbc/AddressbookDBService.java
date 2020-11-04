@@ -145,7 +145,12 @@ public class AddressbookDBService {
 	public List<Person> getContactFromDatabase(String name) throws DatabaseException {
 		String[] fullName = name.split("[ ]");
 		String sql = String.format(
-				"SELECT * FROM contacts_table, addressbook_table, zipCityState, addressbookTypes WHERE firstName = '%s' and lastName = '%s'",
+				"select contacts_table.contactId, addressbook_table.addressbookName, addressbookTypes.type, contacts_table.firstName, contacts_table.lastName, \r\n"
+						+ "contacts_table.address, zipCityState.city, zipCityState.state, contacts_table.zip, contacts_table.phone, contacts_table.email, contacts_table.dateAdded\r\n"
+						+ "from contacts_table\r\n"
+						+ "inner join zipCityState on contacts_table.zip = zipCityState.zip\r\n"
+						+ "inner join addressbook_table on contacts_table.contactId = addressbook_table.contactId\r\n"
+						+ "inner join addressbookTypes on addressbookTypes.addressbookName = addressbook_table.addressbookName WHERE firstName = '%s' and lastName = '%s'",
 				fullName[0], fullName[1]);
 		List<Person> contactList = new ArrayList<>();
 		try (Connection connection = this.getConnection()) {
@@ -171,5 +176,43 @@ public class AddressbookDBService {
 				contact -> (contact.getDateAdded().compareTo(start) >= 0 && contact.getDateAdded().compareTo(end) <= 0))
 				.distinct().collect(Collectors.toList());
 		return contactAddedBetweenDates;
+	}
+
+	/**
+	 * returns list of contacts belonging to given city
+	 * 
+	 * @param city
+	 * @return
+	 * @throws DatabaseException
+	 */
+	public List<Person> getContactsByCity(String city) throws DatabaseException {
+		String sql = String.format(
+				"select contacts_table.contactId, addressbook_table.addressbookName, addressbookTypes.type, contacts_table.firstName, contacts_table.lastName, \r\n"
+						+ "contacts_table.address, zipCityState.city, zipCityState.state, contacts_table.zip, contacts_table.phone, contacts_table.email, contacts_table.dateAdded\r\n"
+						+ "from contacts_table\r\n"
+						+ "inner join zipCityState on contacts_table.zip = zipCityState.zip\r\n"
+						+ "inner join addressbook_table on contacts_table.contactId = addressbook_table.contactId\r\n"
+						+ "inner join addressbookTypes on addressbookTypes.addressbookName = addressbook_table.addressbookName WHERE city = '%s'",
+				city);
+		return getContactData(sql).stream().distinct().collect(Collectors.toList());
+	}
+
+	/**
+	 * returns list of contacts belonging to given state
+	 * 
+	 * @param state
+	 * @return
+	 * @throws DatabaseException
+	 */
+	public List<Person> getContactsByState(String state) throws DatabaseException {
+		String sql = String.format(
+				"select contacts_table.contactId, addressbook_table.addressbookName, addressbookTypes.type, contacts_table.firstName, contacts_table.lastName, \r\n"
+						+ "contacts_table.address, zipCityState.city, zipCityState.state, contacts_table.zip, contacts_table.phone, contacts_table.email, contacts_table.dateAdded\r\n"
+						+ "from contacts_table\r\n"
+						+ "inner join zipCityState on contacts_table.zip = zipCityState.zip\r\n"
+						+ "inner join addressbook_table on contacts_table.contactId = addressbook_table.contactId\r\n"
+						+ "inner join addressbookTypes on addressbookTypes.addressbookName = addressbook_table.addressbookName WHERE state = '%s'",
+				state);
+		return getContactData(sql).stream().distinct().collect(Collectors.toList());
 	}
 }

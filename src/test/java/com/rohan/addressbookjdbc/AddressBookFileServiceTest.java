@@ -59,4 +59,18 @@ class AddressBookFileServiceTest {
 		contactByDateList = addressBookFileService.getContactsByDate(start, end);
 		assertEquals(3, contactByDateList.size());
 	}
+
+	/**
+	 * checking if we get the list of contacts belonging to city or state
+	 * 
+	 * @throws DatabaseException
+	 */
+	@Test
+	public void givenContactDataInDB_WhenRetrievedByCityOrState_ShouldMatchContactInStateOrCityCount()
+			throws DatabaseException {
+		List<Person> contactByCity = addressBookFileService.getContactsByCity("Pune");
+		List<Person> contactByState = addressBookFileService.getContactsByState("Goa");
+		assertEquals(1, contactByCity.size());
+		assertEquals(1, contactByState.size());
+	}
 }

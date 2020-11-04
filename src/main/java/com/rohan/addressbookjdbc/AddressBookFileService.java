@@ -189,4 +189,26 @@ public class AddressBookFileService {
 		return contactByDateList;
 	}
 
+	/**
+	 * returns list of contacts belonging to given city
+	 * 
+	 * @param city
+	 * @return
+	 * @throws DatabaseException
+	 */
+	public List<Person> getContactsByCity(String city) throws DatabaseException {
+		return addressbookDBService.getContactsByCity(city);
+	}
+
+	/**
+	 * returns list of contacts belonging to given state
+	 * 
+	 * @param state
+	 * @return
+	 * @throws DatabaseException
+	 */
+	public List<Person> getContactsByState(String state) throws DatabaseException {
+		return addressbookDBService.getContactsByState(state);
+	}
+
 }
