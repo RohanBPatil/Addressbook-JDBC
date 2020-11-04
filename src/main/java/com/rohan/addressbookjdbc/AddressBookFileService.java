@@ -7,6 +7,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -26,10 +27,10 @@ public class AddressBookFileService {
 	public static String CSV_FILE_NAME = "C:\\Users\\abc\\eclipse-workspace\\Addressbook JDBC\\src\\main\\java\\com\\rohan\\addressbooksystem/addressbook.csv";
 	public static String GSON_FILE_NAME = "C:\\Users\\abc\\eclipse-workspace\\Addressbook JDBC\\src\\main\\java\\com\\rohan\\addressbooksystem/addressbook.json";
 	private List<Person> contactList = new ArrayList<>();
-	private AddressbookDBService addressBookDB;
+	private AddressbookDBService addressbookDBService;
 
 	public AddressBookFileService() {
-		addressBookDB = AddressbookDBService.getInstance();
+		addressbookDBService = AddressbookDBService.getInstance();
 	}
 
 	public void writeData(Map<String, AddressBook> stateAddressBookMap) {
@@ -148,16 +149,16 @@ public class AddressBookFileService {
 	 */
 	public List<Person> readContactData(IOService ioService) throws DatabaseException {
 		if (ioService.equals(IOService.DB_IO)) {
-			this.contactList = addressBookDB.readData();
+			this.contactList = addressbookDBService.readData();
 		}
 		return this.contactList;
 	}
 
 	public void updatePersonsPhone(String name, long phone) throws DatabaseException {
-		int result = addressBookDB.updatePersonsData(name, phone);
+		int result = addressbookDBService.updatePersonsData(name, phone);
 		if (result == 0)
 			return;
-		this.contactList = addressBookDB.readData();
+		this.contactList = addressbookDBService.readData();
 		Person contact = this.getContact(name);
 		if (contact != null)
 			contact.setPhoneNumber(phone);
@@ -170,9 +171,22 @@ public class AddressBookFileService {
 	}
 
 	public boolean checkContactDataSync(String name) throws DatabaseException {
-		List<Person> employeeList = addressBookDB.getContactFromDatabase(name);
+		List<Person> employeeList = addressbookDBService.getContactFromDatabase(name);
 		return employeeList.get(0).equals(getContact(name));
 
+	}
+
+	/**
+	 * returns list of contacts added between given dates
+	 * 
+	 * @param start
+	 * @param end
+	 * @return
+	 * @throws DatabaseException
+	 */
+	public List<Person> getContactsByDate(LocalDate start, LocalDate end) throws DatabaseException {
+		List<Person> contactByDateList = addressbookDBService.readDataForGivenDateRange(start, end);
+		return contactByDateList;
 	}
 
 }
