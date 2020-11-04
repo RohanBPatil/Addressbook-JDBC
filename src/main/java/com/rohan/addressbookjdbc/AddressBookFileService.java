@@ -7,6 +7,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -209,6 +210,27 @@ public class AddressBookFileService {
 	 */
 	public List<Person> getContactsByState(String state) throws DatabaseException {
 		return addressbookDBService.getContactsByState(state);
+	}
+
+	/**
+	 * Adding new contact to database
+	 * 
+	 * @param firstName
+	 * @param lastName
+	 * @param address
+	 * @param city
+	 * @param state
+	 * @param zip
+	 * @param phone
+	 * @param email
+	 * @param addbookName
+	 * @throws DatabaseException
+	 * @throws SQLException
+	 */
+	public void addNewContact(String firstName, String lastName, String address, String city, String state, int zip,
+			long phone, String email, List<String> addbookName) throws DatabaseException, SQLException {
+		addressbookDBService.addContactToDatabase(firstName, lastName, address, city, state, zip, phone, email,
+				addbookName, LocalDate.now());
 	}
 
 }
