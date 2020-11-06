@@ -1,4 +1,4 @@
-package com.rohan.addressbookjdbc;
+package com.capgemini.addressbookjdbc;
 
 import java.sql.Connection;
 import java.sql.Date;
@@ -57,11 +57,10 @@ public class AddressbookDBService {
 	 * @throws DatabaseException
 	 */
 	public List<Person> readData() throws DatabaseException {
-		String sql = "select contacts_table.contactId, addressbook_table.addressbookName, addressbookTypes.type, contacts_table.firstName, contacts_table.lastName, \r\n"
-				+ "contacts_table.address, zipCityState.city, zipCityState.state, contacts_table.zip, contacts_table.phone, contacts_table.email, contacts_table.dateAdded\r\n"
-				+ "from contacts_table\r\n" + "inner join zipCityState on contacts_table.zip = zipCityState.zip\r\n"
-				+ "inner join addressbook_table on contacts_table.contactId = addressbook_table.contactId\r\n"
-				+ "inner join addressbookTypes on addressbookTypes.addressbookName = addressbook_table.addressbookName;";
+		String sql = "select c.contact_id, a.addressbook_name, t.type, c.first_name, c.last_name, \r\n"
+				+ "c.address, z.city, z.state, c.zip, c.phone, c.email, c.date_added\r\n" + "from contacts_table c\r\n"
+				+ "inner join zip_city_state z using(zip)\r\n" + "inner join addressbook_table a using(contact_id)\r\n"
+				+ "inner join addressbook_types t using(addressbook_name);";
 		return this.getContactData(sql);
 	}
 
@@ -94,18 +93,18 @@ public class AddressbookDBService {
 	private List<Person> getData(ResultSet resultSet) throws SQLException {
 		List<Person> contactList = new ArrayList<>();
 		while (resultSet.next()) {
-			int contactId = resultSet.getInt("contactId");
-			String fname = resultSet.getString("firstName");
-			String lname = resultSet.getString("lastName");
+			int contactId = resultSet.getInt("contact_id");
+			String fname = resultSet.getString("first_name");
+			String lname = resultSet.getString("last_name");
 			String address = resultSet.getString("address");
 			int zip = resultSet.getInt("zip");
 			String city = resultSet.getString("city");
 			String state = resultSet.getString("state");
 			long phoneNumber = resultSet.getLong("phone");
 			String email = resultSet.getString("email");
-			String addbookName = resultSet.getString("addressbookName");
+			String addbookName = resultSet.getString("addressbook_name");
 			String type = resultSet.getString("type");
-			LocalDate dateAdded = resultSet.getDate("dateAdded").toLocalDate();
+			LocalDate dateAdded = resultSet.getDate("date_added").toLocalDate();
 			contactList.add(new Person(contactId, fname, lname, address, city, state, zip, phoneNumber, email,
 					addbookName, type, dateAdded));
 		}
@@ -122,7 +121,7 @@ public class AddressbookDBService {
 	 */
 	@SuppressWarnings("static-access")
 	public int updatePersonsData(String name, long phone) throws DatabaseException {
-		String sql = "update contacts_table set phone = ? where firstName = ?";
+		String sql = "update contacts_table set phone = ? where first_name = ?";
 		int result = 0;
 		try {
 			if (this.contactPrepareStatement == null) {
@@ -147,13 +146,10 @@ public class AddressbookDBService {
 	 */
 	public List<Person> getContactFromDatabase(String name) throws DatabaseException {
 		String[] fullName = name.split("[ ]");
-		String sql = String.format(
-				"select contacts_table.contactId, addressbook_table.addressbookName, addressbookTypes.type, contacts_table.firstName, contacts_table.lastName, \r\n"
-						+ "contacts_table.address, zipCityState.city, zipCityState.state, contacts_table.zip, contacts_table.phone, contacts_table.email, contacts_table.dateAdded\r\n"
-						+ "from contacts_table\r\n"
-						+ "inner join zipCityState on contacts_table.zip = zipCityState.zip\r\n"
-						+ "inner join addressbook_table on contacts_table.contactId = addressbook_table.contactId\r\n"
-						+ "inner join addressbookTypes on addressbookTypes.addressbookName = addressbook_table.addressbookName WHERE firstName = '%s' and lastName = '%s'",
+		String sql = String.format("select c.contact_id, a.addressbook_name, t.type, c.first_name, c.last_name, \r\n"
+				+ "c.address, z.city, z.state, c.zip, c.phone, c.email, c.date_added\r\n" + "from contacts_table c\r\n"
+				+ "inner join zip_city_state z using(zip)\r\n" + "inner join addressbook_table a using(contact_id)\r\n"
+				+ "inner join addressbook_types t using(addressbook_name) WHERE first_name = '%s' and last_name = '%s'",
 				fullName[0], fullName[1]);
 		List<Person> contactList = new ArrayList<>();
 		try (Connection connection = this.getConnection()) {
@@ -189,14 +185,10 @@ public class AddressbookDBService {
 	 * @throws DatabaseException
 	 */
 	public List<Person> getContactsByCity(String city) throws DatabaseException {
-		String sql = String.format(
-				"select contacts_table.contactId, addressbook_table.addressbookName, addressbookTypes.type, contacts_table.firstName, contacts_table.lastName, \r\n"
-						+ "contacts_table.address, zipCityState.city, zipCityState.state, contacts_table.zip, contacts_table.phone, contacts_table.email, contacts_table.dateAdded\r\n"
-						+ "from contacts_table\r\n"
-						+ "inner join zipCityState on contacts_table.zip = zipCityState.zip\r\n"
-						+ "inner join addressbook_table on contacts_table.contactId = addressbook_table.contactId\r\n"
-						+ "inner join addressbookTypes on addressbookTypes.addressbookName = addressbook_table.addressbookName WHERE city = '%s'",
-				city);
+		String sql = String.format("select c.contact_id, a.addressbook_name, t.type, c.first_name, c.last_name, \r\n"
+				+ "c.address, z.city, z.state, c.zip, c.phone, c.email, c.date_added\r\n" + "from contacts_table c\r\n"
+				+ "inner join zip_city_state z using(zip)\r\n" + "inner join addressbook_table a using(contact_id)\r\n"
+				+ "inner join addressbook_types t using(addressbook_name) WHERE city = '%s'", city);
 		return getContactData(sql).stream().distinct().collect(Collectors.toList());
 	}
 
@@ -208,14 +200,10 @@ public class AddressbookDBService {
 	 * @throws DatabaseException
 	 */
 	public List<Person> getContactsByState(String state) throws DatabaseException {
-		String sql = String.format(
-				"select contacts_table.contactId, addressbook_table.addressbookName, addressbookTypes.type, contacts_table.firstName, contacts_table.lastName, \r\n"
-						+ "contacts_table.address, zipCityState.city, zipCityState.state, contacts_table.zip, contacts_table.phone, contacts_table.email, contacts_table.dateAdded\r\n"
-						+ "from contacts_table\r\n"
-						+ "inner join zipCityState on contacts_table.zip = zipCityState.zip\r\n"
-						+ "inner join addressbook_table on contacts_table.contactId = addressbook_table.contactId\r\n"
-						+ "inner join addressbookTypes on addressbookTypes.addressbookName = addressbook_table.addressbookName WHERE state = '%s'",
-				state);
+		String sql = String.format("select c.contact_id, a.addressbook_name, t.type, c.first_name, c.last_name, \r\n"
+				+ "c.address, z.city, z.state, c.zip, c.phone, c.email, c.date_added\r\n" + "from contacts_table c\r\n"
+				+ "inner join zip_city_state z using(zip)\r\n" + "inner join addressbook_table a using(contact_id)\r\n"
+				+ "inner join addressbook_types t using(addressbook_name) WHERE state = '%s'", state);
 		return getContactData(sql).stream().distinct().collect(Collectors.toList());
 	}
 
@@ -238,7 +226,7 @@ public class AddressbookDBService {
 	 */
 	@SuppressWarnings("static-access")
 	public List<Person> addContactToDatabase(String firstName, String lastName, String address, String city,
-			String state, int zip, long phone, String email, List<String> addbookName, LocalDate dateAdded)
+			String state, int zip, long phone, String email, List<String> types, LocalDate dateAdded)
 			throws DatabaseException, SQLException {
 		int contactId = -1;
 		Connection connection = null;
@@ -252,7 +240,7 @@ public class AddressbookDBService {
 
 		try (Statement statement = (Statement) connection.createStatement()) { // adding to contacts_table
 			String sql = String.format(
-					"insert into contacts_table (firstName, lastName, address, zip, phone, email, dateAdded) values ('%s', '%s', '%s', '%s', '%s', '%s', '%s')",
+					"insert into contacts_table (first_name, last_name, address, zip, phone, email, date_added) values ('%s', '%s', '%s', '%s', '%s', '%s', '%s')",
 					firstName, lastName, address, zip, phone, email, Date.valueOf(dateAdded));
 			int rowAffected = statement.executeUpdate(sql, statement.RETURN_GENERATED_KEYS);
 			if (rowAffected == 1) {
@@ -269,16 +257,16 @@ public class AddressbookDBService {
 			throw new DatabaseException("Unable to add to contacts_table");
 		}
 
-		try (Statement statement = (Statement) connection.createStatement()) { // adding to zipCityState
-			String sqlGetZip = String.format("select zip from zipCityState where zip = %s", zip);
+		try (Statement statement = (Statement) connection.createStatement()) { // adding to zip_city_state
+			String sqlGetZip = String.format("select zip from zip_city_state where zip = %s", zip);
 			ResultSet resultSet = statement.executeQuery(sqlGetZip);
 			int existingZip = 0;
 			while (resultSet.next()) {
 				existingZip = resultSet.getInt("zip");
 			}
-			if (existingZip == 0) { // if zip is not present in zipCityState then add or skip
-				String sql = String.format("insert into zipCityState (zip, city, state) values ('%s', '%s', '%s')", zip,
-						city, state);
+			if (existingZip == 0) { // if zip is not present in zip_city_state then add or skip
+				String sql = String.format("insert into zip_city_state (zip, city, state) values ('%s', '%s', '%s')",
+						zip, city, state);
 				statement.executeUpdate(sql);
 			}
 
@@ -288,31 +276,32 @@ public class AddressbookDBService {
 			} catch (SQLException e) {
 				throw new DatabaseException(e.getMessage());
 			}
-			throw new DatabaseException("Unable to add to zipCityState table");
+			throw new DatabaseException("Unable to add to zip_city_state table");
 		}
 
-		Map<String, String> addbookNameTypeMap = new HashMap<>();
+		Map<String, String> typeAddbookNameMap = new HashMap<>();
 		try (Statement tempStatement = (Statement) connection.createStatement()) { // getting addressbook types
-			String sqlGetType = String.format("select * from addressbooktypes");
+			String sqlGetType = String.format("select * from addressbook_types");
 			ResultSet resultSet = tempStatement.executeQuery(sqlGetType);
 			while (resultSet.next()) {
-				addbookNameTypeMap.put(resultSet.getString("addressbookName"), resultSet.getString("type"));
+				typeAddbookNameMap.put(resultSet.getString("type"), resultSet.getString("addressbook_name"));
 			}
 		} catch (Exception e) {
 			throw new DatabaseException(e.getMessage());
 		}
 		final int contId = contactId;
 		try (Statement statement = (Statement) connection.createStatement()) { // adding to addressbook_table
-			addbookName.forEach(name -> {
+			types.forEach(type -> {
 				String sql = String.format(
-						"insert into addressbook_table (contactId, addressbookName) values ('%s', '%s')", contId, name);
+						"insert into addressbook_table (contact_id, addressbook_name) values ('%s', '%s')", contId,
+						typeAddbookNameMap.get(type));
 				try {
 					statement.executeUpdate(sql);
 				} catch (SQLException e) {
 				}
 			});
-			addbookName.forEach(name -> addedContacts.add(new Person(contId, firstName, lastName, address, city, state,
-					zip, phone, email, name, addbookNameTypeMap.get(name), dateAdded)));
+			types.forEach(type -> addedContacts.add(new Person(contId, firstName, lastName, address, city, state,
+					zip, phone, email, typeAddbookNameMap.get(type), type, dateAdded)));
 
 		} catch (SQLException exception) {
 			try {

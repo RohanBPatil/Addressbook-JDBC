@@ -1,4 +1,4 @@
-package com.rohan.addressbookjdbc;
+package com.capgemini.addressbookjdbc;
 
 @SuppressWarnings("serial")
 public class DatabaseException extends Exception{

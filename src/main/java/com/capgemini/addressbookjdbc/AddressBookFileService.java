@@ -1,4 +1,4 @@
-package com.rohan.addressbookjdbc;
+package com.capgemini.addressbookjdbc;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -228,9 +228,9 @@ public class AddressBookFileService {
 	 * @throws SQLException
 	 */
 	public void addNewContact(String firstName, String lastName, String address, String city, String state, int zip,
-			long phone, String email, List<String> addbookName) throws DatabaseException, SQLException {
+			long phone, String email, List<String> types) throws DatabaseException, SQLException {
 		addressbookDBService.addContactToDatabase(firstName, lastName, address, city, state, zip, phone, email,
-				addbookName, LocalDate.now());
+				types, LocalDate.now());
 	}
 
 }

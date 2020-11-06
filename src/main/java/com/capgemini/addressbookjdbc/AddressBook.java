@@ -1,4 +1,4 @@
-package com.rohan.addressbookjdbc;
+package com.capgemini.addressbookjdbc;
 
 import java.util.ArrayList;
 import java.util.List;

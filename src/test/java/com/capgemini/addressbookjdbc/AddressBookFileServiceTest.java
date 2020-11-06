@@ -1,4 +1,4 @@
-package com.rohan.addressbookjdbc;
+package com.capgemini.addressbookjdbc;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -10,7 +10,7 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import com.rohan.addressbookjdbc.AddressBookFileService.IOService;
+import com.capgemini.addressbookjdbc.AddressBookFileService.IOService;
 
 class AddressBookFileServiceTest {
 	private static AddressBookFileService addressBookFileService;
@@ -29,7 +29,7 @@ class AddressBookFileServiceTest {
 	 */
 	@Test
 	public void givenContactDataInDB_WhenRetrieved_ShouldMatchContactCount() throws DatabaseException {
-		assertEquals(10, contactData.size());
+		assertEquals(12, contactData.size());
 	}
 
 	/**
@@ -59,7 +59,7 @@ class AddressBookFileServiceTest {
 		LocalDate start = LocalDate.of(2018, 8, 10);
 		LocalDate end = LocalDate.now();
 		contactByDateList = addressBookFileService.getContactsByDate(start, end);
-		assertEquals(4, contactByDateList.size());
+		assertEquals(5, contactByDateList.size());
 	}
 
 	/**
@@ -84,10 +84,10 @@ class AddressBookFileServiceTest {
 	 */
 	@Test
 	public void givenNewContact_WhenAdded_ShouldSincWithDB() throws DatabaseException, SQLException {
-		addressBookFileService.addNewContact("Raghav", "Soni", "Nashik", "Nashik", "Nashik", 758452, 1234567891,
-				"raghavsoni@gmail.com", Arrays.asList("AddressBook1", "AddressBook3"));
+		addressBookFileService.addNewContact("Ratan", "Tata", "Shirdi", "Nashik", "Nashik", 758458, 1134567800,
+				"ratantata@gmail.com", Arrays.asList("family", "profession"));
 		contactData = addressBookFileService.readContactData(IOService.DB_IO);
-		boolean result = addressBookFileService.checkContactDataSync("Raghav Soni");
+		boolean result = addressBookFileService.checkContactDataSync("Ratan Tata");
 		assertTrue(result);
 	}
 }
