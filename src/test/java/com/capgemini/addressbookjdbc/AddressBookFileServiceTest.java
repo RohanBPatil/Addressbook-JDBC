@@ -2,7 +2,6 @@ package com.capgemini.addressbookjdbc;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
@@ -29,7 +28,7 @@ class AddressBookFileServiceTest {
 	 */
 	@Test
 	public void givenContactDataInDB_WhenRetrieved_ShouldMatchContactCount() throws DatabaseException {
-		assertEquals(12, contactData.size());
+		assertEquals(15, contactData.size());
 	}
 
 	/**
@@ -59,7 +58,7 @@ class AddressBookFileServiceTest {
 		LocalDate start = LocalDate.of(2018, 8, 10);
 		LocalDate end = LocalDate.now();
 		contactByDateList = addressBookFileService.getContactsByDate(start, end);
-		assertEquals(5, contactByDateList.size());
+		assertEquals(8, contactByDateList.size());
 	}
 
 	/**
@@ -77,17 +76,39 @@ class AddressBookFileServiceTest {
 	}
 
 	/**
-	 * adding new contact and checking if in sync
+	 * adding new contact and checking if it is in sync
 	 * 
 	 * @throws DatabaseException
 	 * @throws SQLException
 	 */
 	@Test
-	public void givenNewContact_WhenAdded_ShouldSincWithDB() throws DatabaseException, SQLException {
+	public void givenNewContact_WhenAdded_ShouldSincWithDB() throws DatabaseException {
 		addressBookFileService.addNewContact("Ratan", "Tata", "Shirdi", "Nashik", "Nashik", 758458, 1134567800,
 				"ratantata@gmail.com", Arrays.asList("family", "profession"));
 		contactData = addressBookFileService.readContactData(IOService.DB_IO);
 		boolean result = addressBookFileService.checkContactDataSync("Ratan Tata");
+		assertTrue(result);
+	}
+
+	/**
+	 * adding multiple new contact and checking if it is in sync
+	 * 
+	 * @throws DatabaseException
+	 * @throws SQLException
+	 */
+	@Test
+	public void givenMultipleNewContact_WhenAddedUsingThreads_ShouldSincWithDB() throws DatabaseException {
+		List<Person> newContactsList = Arrays.asList(
+				new Person(0, "Jeff", "Bezos", "Shirdi", "Nashik", "Nashik", 758458, 7777777777L, "jeffbezz@gmail.com",
+						"", "profession"),
+				new Person(0, "Bill", "Gates", "Shirdi", "Nashik", "Nashik", 758458, 9865986532L, "billgates@gmail.com",
+						"", "family"),
+				new Person(0, "Mark", "Zuks", "Shirdi", "Nashik", "Nashik", 758458, 1111111111L, "markzuk@gmail.com",
+						"", "friend"));
+		addressBookFileService.addMultipleContacts(newContactsList);
+		contactData = addressBookFileService.readContactData(IOService.DB_IO);
+		boolean result = addressBookFileService
+				.checkMultipleContactDataSync(Arrays.asList("Jeff Bezos", "Bill Gates", "Mark Zuks"));
 		assertTrue(result);
 	}
 }
