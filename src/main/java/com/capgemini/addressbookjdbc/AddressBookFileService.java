@@ -40,7 +40,7 @@ public class AddressBookFileService {
 	public AddressBookFileService() {
 		addressbookDBService = AddressbookDBService.getInstance();
 	}
-	
+
 	public AddressBookFileService(List<Person> contactList) {
 		this();
 		this.contactList = contactList;
@@ -303,9 +303,23 @@ public class AddressBookFileService {
 		}
 		return true;
 	}
-	
+
+	/**
+	 * returns size of application memory
+	 * 
+	 * @return
+	 */
 	public int countEntries() {
 		return contactList.size();
+	}
+
+	/**
+	 * adds new contacts to application memory
+	 * 
+	 * @param newContacts
+	 */
+	public void addToApplicationMemory(Person contact) {
+		contactList.add(contact);
 	}
 
 }
