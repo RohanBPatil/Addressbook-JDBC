@@ -113,4 +113,28 @@ class AddressBookJSONFileServiceTest {
 		assertEquals(200, statusCode);
 	}
 
+	/**
+	 * deleting contact from JSON server and application memory
+	 * 
+	 * @param name
+	 * @return
+	 */
+	private Response deleteContact(String name) {
+		Person[] arrayOfContact = getContactList();
+		AddressBookFileService addressbookService = new AddressBookFileService(Arrays.asList(arrayOfContact));
+		Person contact = addressbookService.getContact(name);
+		addressbookService.deleteFromApplicationMemory(contact);
+		RequestSpecification request = RestAssured.given();
+		request.header("Content-Type", "application/json");
+		return request.delete("/contacts/" + contact.getId());
+	}
+
+	@Test
+	public void givenContactToDelete_WhenDeleted_ShouldMatch200ResponseAndCount() {
+		int statusCode = deleteContact("Kamala Harris").getStatusCode();
+		assertEquals(200, statusCode);
+		Person[] arrayOfContact = getContactList();
+		int count = arrayOfContact.length;
+		assertEquals(17, count);
+	}
 }

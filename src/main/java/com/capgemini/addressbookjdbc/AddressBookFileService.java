@@ -14,6 +14,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -325,4 +326,14 @@ public class AddressBookFileService {
 		contactList.add(contact);
 	}
 
+	/**
+	 * deleting from application memory
+	 * 
+	 * @param contact
+	 */
+	public void deleteFromApplicationMemory(Person contact) {
+		List<Person> newList = contactList.stream().filter(p -> !p.getName().equals(contact.getName()))
+				.collect(Collectors.toList());
+		contactList = newList;
+	}
 }

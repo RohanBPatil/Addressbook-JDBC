@@ -301,22 +301,6 @@
         "month": 11,
         "day": 8
       }
-    },
-    {
-      "id": 18,
-      "firstName": "Kamala",
-      "lastName": "Harris",
-      "address": "Vita",
-      "city": "Sangli",
-      "state": "Maharashtra",
-      "zip": 858585,
-      "phoneNum": 0,
-      "email": "kamalah@gmail.com",
-      "dateAdded": {
-        "year": 2020,
-        "month": 11,
-        "day": 8
-      }
     }
   ]
 }
