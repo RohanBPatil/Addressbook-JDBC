@@ -47,7 +47,13 @@ public class AddressBookFileService {
 		this.contactList = list;
 	}
 
-	public void writeData(Map<String, AddressBook> stateAddressBookMap) {
+	/**
+	 * writing data to file
+	 * 
+	 * @param stateAddressBookMap
+	 * @throws AddressbookException
+	 */
+	public void writeData(Map<String, AddressBook> stateAddressBookMap) throws AddressbookException {
 		StringBuffer personBuffer = new StringBuffer();
 		stateAddressBookMap.values().stream().map(book -> book.getPersonList()).forEach(list -> {
 			list.forEach(person -> {
@@ -57,20 +63,31 @@ public class AddressBookFileService {
 		});
 		try {
 			Files.write(Paths.get(FILE_NAME), personBuffer.toString().getBytes());
-		} catch (IOException e) {
-			e.printStackTrace();
+		} catch (IOException exception) {
+			throw new AddressbookException(exception.getMessage());
 		}
 	}
 
-	public void readData() {
+	/**
+	 * reading data from file
+	 * 
+	 * @throws AddressbookException
+	 */
+	public void readData() throws AddressbookException {
 		try {
 			Files.lines(new File(FILE_NAME).toPath()).forEach(System.out::println);
-		} catch (IOException e) {
-			e.printStackTrace();
+		} catch (IOException exception) {
+			throw new AddressbookException(exception.getMessage());
 		}
 	}
 
-	public void writeDataCSV(Map<String, AddressBook> stateAddressBookMap) {
+	/**
+	 * writing data to CSV file
+	 * 
+	 * @param stateAddressBookMap
+	 * @throws AddressbookException
+	 */
+	public void writeDataCSV(Map<String, AddressBook> stateAddressBookMap) throws AddressbookException {
 
 		File file = new File(CSV_FILE_NAME);
 
@@ -92,13 +109,18 @@ public class AddressBookFileService {
 			writer.writeAll(data);
 			writer.close();
 			System.out.println("Data entered successfully to addressbook.csv file.");
-		} catch (IOException e) {
-			e.printStackTrace();
+		} catch (IOException exception) {
+			throw new AddressbookException(exception.getMessage());
 		}
 
 	}
 
-	public void readDataCSV() {
+	/**
+	 * reading data from CSV file
+	 * 
+	 * @throws AddressbookException
+	 */
+	public void readDataCSV() throws AddressbookException {
 		try {
 			FileReader filereader = new FileReader(CSV_FILE_NAME);
 			CSVReader csvReader = new CSVReader(filereader);
@@ -112,12 +134,18 @@ public class AddressBookFileService {
 				System.out.println();
 			}
 			csvReader.close();
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (Exception exception) {
+			throw new AddressbookException(exception.getMessage());
 		}
 	}
 
-	public void writeDataGSON(Map<String, AddressBook> stateAddressBookMap) {
+	/**
+	 * writing data to JSON file
+	 * 
+	 * @param stateAddressBookMap
+	 * @throws AddressbookException
+	 */
+	public void writeDataGSON(Map<String, AddressBook> stateAddressBookMap) throws AddressbookException {
 		try {
 			Gson gson = new Gson();
 			FileWriter writer = new FileWriter(GSON_FILE_NAME);
@@ -133,11 +161,16 @@ public class AddressBookFileService {
 			writer.close();
 			System.out.println("Data entered successfully to addressbook.json file.");
 		} catch (IOException exception) {
-			exception.printStackTrace();
+			throw new AddressbookException(exception.getMessage());
 		}
 	}
 
-	public void readDataGSON() {
+	/**
+	 * reading data from
+	 * 
+	 * @throws AddressbookException
+	 */
+	public void readDataGSON() throws AddressbookException {
 		Gson gson = new Gson();
 		try {
 			BufferedReader bufferedReader = new BufferedReader(new FileReader(GSON_FILE_NAME));
@@ -150,7 +183,7 @@ public class AddressBookFileService {
 				}
 			}
 		} catch (IOException exception) {
-			exception.printStackTrace();
+			throw new AddressbookException(exception.getMessage());
 		}
 	}
 
@@ -168,6 +201,14 @@ public class AddressBookFileService {
 		return this.contactList;
 	}
 
+	/**
+	 * updates phone number
+	 * 
+	 * @param name
+	 * @param phone
+	 * @param ioService
+	 * @throws DatabaseException
+	 */
 	public void updatePersonsPhone(String name, long phone, IOService ioService) throws DatabaseException {
 		if (ioService.equals(IOService.DB_IO)) {
 			int result = addressbookDBService.updatePersonsData(name, phone);
@@ -181,12 +222,25 @@ public class AddressBookFileService {
 		}
 	}
 
+	/**
+	 * returns contact having given name
+	 * 
+	 * @param name
+	 * @return
+	 */
 	public Person getContact(String name) {
 		Person contact = this.contactList.stream().filter(contactData -> contactData.getName().equalsIgnoreCase(name))
 				.findFirst().orElse(null);
 		return contact;
 	}
 
+	/**
+	 * checks if data from database is in sync
+	 * 
+	 * @param name
+	 * @return
+	 * @throws DatabaseException
+	 */
 	public boolean checkContactDataSync(String name) throws DatabaseException {
 		List<Person> employeeList = addressbookDBService.getContactFromDatabase(name);
 		return employeeList.get(0).equals(getContact(name));

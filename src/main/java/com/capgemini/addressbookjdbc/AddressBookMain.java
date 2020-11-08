@@ -16,6 +16,8 @@ public class AddressBookMain extends AddressBook {
 	public static HashMap<String, AddressBook> stateAddressBookMap = new HashMap<>();
 
 	/**
+	 * getting details from console
+	 * 
 	 * @param scanner
 	 */
 	public void addPersonDetails(Scanner scanner) {
@@ -76,6 +78,8 @@ public class AddressBookMain extends AddressBook {
 	}
 
 	/**
+	 * searching person by city
+	 * 
 	 * @param name
 	 * @param city
 	 */
@@ -91,6 +95,8 @@ public class AddressBookMain extends AddressBook {
 	}
 
 	/**
+	 * search person by state
+	 * 
 	 * @param name
 	 * @param state
 	 */
@@ -106,6 +112,8 @@ public class AddressBookMain extends AddressBook {
 	}
 
 	/**
+	 * displaying persons by city
+	 * 
 	 * @param city
 	 */
 	public void viewPersonsByCity(String city) {
@@ -120,6 +128,8 @@ public class AddressBookMain extends AddressBook {
 	}
 
 	/**
+	 * displaying persons by state
+	 * 
 	 * @param state
 	 */
 	public void viewPersonsByState(String state) {
@@ -134,6 +144,8 @@ public class AddressBookMain extends AddressBook {
 	}
 
 	/**
+	 * counting persons by city
+	 * 
 	 * @param city
 	 */
 	public void countByCity(String city) {
@@ -145,6 +157,8 @@ public class AddressBookMain extends AddressBook {
 	}
 
 	/**
+	 * counting persons by state
+	 * 
 	 * @param state
 	 */
 	public void countByState(String state) {
@@ -191,8 +205,9 @@ public class AddressBookMain extends AddressBook {
 	 * reads data from file and prints on console
 	 * 
 	 * @param ioService
+	 * @throws AddressbookException
 	 */
-	public void readData(IOServices ioService) {
+	public void readData(IOServices ioService) throws AddressbookException {
 		if (ioService.equals(IOServices.FILE_IO))
 			new AddressBookFileService().readData();
 	}
@@ -201,8 +216,9 @@ public class AddressBookMain extends AddressBook {
 	 * writes data taken from user by console to file
 	 * 
 	 * @param ioService
+	 * @throws AddressbookException
 	 */
-	public void writeData(IOServices ioService) {
+	public void writeData(IOServices ioService) throws AddressbookException {
 		if (ioService.equals(IOServices.FILE_IO)) {
 			new AddressBookFileService().writeData(stateAddressBookMap);
 		}
@@ -212,8 +228,9 @@ public class AddressBookMain extends AddressBook {
 	 * reads data from addressbook.csv file
 	 * 
 	 * @param ioService
+	 * @throws AddressbookException
 	 */
-	public void readDataCSV(IOServices ioService) {
+	public void readDataCSV(IOServices ioService) throws AddressbookException {
 		if (ioService.equals(IOServices.FILE_IO)) {
 			new AddressBookFileService().readDataCSV();
 		}
@@ -223,8 +240,9 @@ public class AddressBookMain extends AddressBook {
 	 * writes data to addressbook.csv file
 	 * 
 	 * @param ioService
+	 * @throws AddressbookException
 	 */
-	public void writeDataCSV(IOServices ioService) {
+	public void writeDataCSV(IOServices ioService) throws AddressbookException {
 		if (ioService.equals(IOServices.FILE_IO)) {
 			new AddressBookFileService().writeDataCSV(stateAddressBookMap);
 		}
@@ -235,8 +253,9 @@ public class AddressBookMain extends AddressBook {
 	 * reads data from addressbook.json file
 	 * 
 	 * @param ioService
+	 * @throws AddressbookException
 	 */
-	public void readDataGSON(IOServices ioService) {
+	public void readDataGSON(IOServices ioService) throws AddressbookException {
 		if (ioService.equals(IOServices.FILE_IO)) {
 			new AddressBookFileService().readDataGSON();
 		}
@@ -246,15 +265,16 @@ public class AddressBookMain extends AddressBook {
 	 * writes data to addressbook.json file
 	 * 
 	 * @param ioService
+	 * @throws AddressbookException
 	 */
-	public void writeDataGSON(IOServices ioService) {
+	public void writeDataGSON(IOServices ioService) throws AddressbookException {
 		if (ioService.equals(IOServices.FILE_IO)) {
 			new AddressBookFileService().writeDataGSON(stateAddressBookMap);
 		}
 
 	}
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws AddressbookException {
 
 		System.out.println("WELCOME TO ADDRESS BOOK");
 
@@ -365,5 +385,4 @@ public class AddressBookMain extends AddressBook {
 		scanner.close();
 	}
 
-	
 }
