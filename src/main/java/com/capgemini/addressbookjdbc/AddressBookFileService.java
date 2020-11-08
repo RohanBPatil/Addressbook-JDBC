@@ -40,6 +40,11 @@ public class AddressBookFileService {
 	public AddressBookFileService() {
 		addressbookDBService = AddressbookDBService.getInstance();
 	}
+	
+	public AddressBookFileService(List<Person> contactList) {
+		this();
+		this.contactList = contactList;
+	}
 
 	public void writeData(Map<String, AddressBook> stateAddressBookMap) {
 		StringBuffer personBuffer = new StringBuffer();
@@ -297,6 +302,10 @@ public class AddressBookFileService {
 			return false;
 		}
 		return true;
+	}
+	
+	public int countEntries() {
+		return contactList.size();
 	}
 
 }

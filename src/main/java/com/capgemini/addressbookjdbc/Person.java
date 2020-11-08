@@ -57,6 +57,12 @@ public class Person {
 		this.phoneNum = phoneNum;
 		this.email = email;
 	}
+	
+	public Person(String firstName, String lastName, String address, String city, String state, int zip, long phoneNum,
+			String email, LocalDate dateAdded) {
+		this(firstName, lastName, address, city, state, zip, phoneNum, email);
+		this.dateAdded = dateAdded;
+	}
 
 	public Person(int contactId, String firstName, String lastName, String address, String city, String state, int zip,
 			long phoneNum, String email, String addbookName, String type) {

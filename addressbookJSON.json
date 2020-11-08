@@ -1,0 +1,274 @@
+{
+  "contacts": [
+    {
+      "contactId": 1,
+      "firstName": "abc",
+      "lastName": "bca",
+      "address": "bandra",
+      "city": "Mumbai",
+      "state": "Maharashtra",
+      "zip": 401202,
+      "phoneNum": 8451625386,
+      "email": "abc@gmail.com",
+      "addbookName": "AddressBook1",
+      "type": "family",
+      "dateAdded": {
+        "year": 2017,
+        "month": 1,
+        "day": 3
+      }
+    },
+    {
+      "contactId": 1,
+      "firstName": "abc",
+      "lastName": "bca",
+      "address": "bandra",
+      "city": "Mumbai",
+      "state": "Maharashtra",
+      "zip": 401202,
+      "phoneNum": 8451625386,
+      "email": "abc@gmail.com",
+      "addbookName": "AddressBook2",
+      "type": "friend",
+      "dateAdded": {
+        "year": 2017,
+        "month": 1,
+        "day": 3
+      }
+    },
+    {
+      "contactId": 2,
+      "firstName": "klm",
+      "lastName": "mlk",
+      "address": "Shirala",
+      "city": "Sangli",
+      "state": "Maharashtra",
+      "zip": 408574,
+      "phoneNum": 9865358748,
+      "email": "klm@gmail.com",
+      "addbookName": "AddressBook2",
+      "type": "friend",
+      "dateAdded": {
+        "year": 2018,
+        "month": 1,
+        "day": 5
+      }
+    },
+    {
+      "contactId": 2,
+      "firstName": "klm",
+      "lastName": "mlk",
+      "address": "Shirala",
+      "city": "Sangli",
+      "state": "Maharashtra",
+      "zip": 408574,
+      "phoneNum": 9865358748,
+      "email": "klm@gmail.com",
+      "addbookName": "AddressBook3",
+      "type": "profession",
+      "dateAdded": {
+        "year": 2018,
+        "month": 1,
+        "day": 5
+      }
+    },
+    {
+      "contactId": 3,
+      "firstName": "pqr",
+      "lastName": "rqp",
+      "address": "Chinchwad",
+      "city": "Pune",
+      "state": "Maharashtra",
+      "zip": 401857,
+      "phoneNum": 9865326654,
+      "email": "pqr@gmail.com",
+      "addbookName": "AddressBook1",
+      "type": "family",
+      "dateAdded": {
+        "year": 2019,
+        "month": 9,
+        "day": 20
+      }
+    },
+    {
+      "contactId": 4,
+      "firstName": "uvw",
+      "lastName": "wvu",
+      "address": "Mapusa",
+      "city": "Panji",
+      "state": "Goa",
+      "zip": 251277,
+      "phoneNum": 7800055598,
+      "email": "uvw@gmail.com",
+      "addbookName": "AddressBook3",
+      "type": "profession",
+      "dateAdded": {
+        "year": 2020,
+        "month": 2,
+        "day": 24
+      }
+    },
+    {
+      "contactId": 4,
+      "firstName": "uvw",
+      "lastName": "wvu",
+      "address": "Mapusa",
+      "city": "Panji",
+      "state": "Goa",
+      "zip": 251277,
+      "phoneNum": 7800055598,
+      "email": "uvw@gmail.com",
+      "addbookName": "AddressBook1",
+      "type": "family",
+      "dateAdded": {
+        "year": 2020,
+        "month": 2,
+        "day": 24
+      }
+    },
+    {
+      "contactId": 5,
+      "firstName": "xyz",
+      "lastName": "zyx",
+      "address": "Shivdi",
+      "city": "Mumbai",
+      "state": "Maharashtra",
+      "zip": 401245,
+      "phoneNum": 8958658568,
+      "email": "xyz@gmail.com",
+      "addbookName": "AddressBook2",
+      "type": "friend",
+      "dateAdded": {
+        "year": 2020,
+        "month": 5,
+        "day": 31
+      }
+    },
+    {
+      "contactId": 6,
+      "firstName": "Raghav",
+      "lastName": "Soni",
+      "address": "Nashik",
+      "city": "Nashik",
+      "state": "Nashik",
+      "zip": 758452,
+      "phoneNum": 1234567891,
+      "email": "raghavsoni@gmail.com",
+      "addbookName": "AddressBook1",
+      "type": "family",
+      "dateAdded": {
+        "year": 2020,
+        "month": 11,
+        "day": 4
+      }
+    },
+    {
+      "contactId": 6,
+      "firstName": "Raghav",
+      "lastName": "Soni",
+      "address": "Nashik",
+      "city": "Nashik",
+      "state": "Nashik",
+      "zip": 758452,
+      "phoneNum": 1234567891,
+      "email": "raghavsoni@gmail.com",
+      "addbookName": "AddressBook3",
+      "type": "profession",
+      "dateAdded": {
+        "year": 2020,
+        "month": 11,
+        "day": 4
+      }
+    },
+    {
+      "contactId": 7,
+      "firstName": "Ratan",
+      "lastName": "Tata",
+      "address": "Shirdi",
+      "city": "Nashik",
+      "state": "Nashik",
+      "zip": 758458,
+      "phoneNum": 1134567800,
+      "email": "ratantata@gmail.com",
+      "addbookName": "AddressBook1",
+      "type": "family",
+      "dateAdded": {
+        "year": 2020,
+        "month": 11,
+        "day": 5
+      }
+    },
+    {
+      "contactId": 7,
+      "firstName": "Ratan",
+      "lastName": "Tata",
+      "address": "Shirdi",
+      "city": "Nashik",
+      "state": "Nashik",
+      "zip": 758458,
+      "phoneNum": 1134567800,
+      "email": "ratantata@gmail.com",
+      "addbookName": "AddressBook3",
+      "type": "profession",
+      "dateAdded": {
+        "year": 2020,
+        "month": 11,
+        "day": 5
+      }
+    },
+    {
+      "contactId": 13,
+      "firstName": "Jeff",
+      "lastName": "Bezos",
+      "address": "Shirdi",
+      "city": "Nashik",
+      "state": "Nashik",
+      "zip": 758458,
+      "phoneNum": 7777777777,
+      "email": "jeffbezz@gmail.com",
+      "addbookName": "AddressBook3",
+      "type": "profession",
+      "dateAdded": {
+        "year": 2020,
+        "month": 11,
+        "day": 6
+      }
+    },
+    {
+      "contactId": 15,
+      "firstName": "Bill",
+      "lastName": "Gates",
+      "address": "Shirdi",
+      "city": "Nashik",
+      "state": "Nashik",
+      "zip": 758458,
+      "phoneNum": 9865986532,
+      "email": "billgates@gmail.com",
+      "addbookName": "AddressBook1",
+      "type": "family",
+      "dateAdded": {
+        "year": 2020,
+        "month": 11,
+        "day": 6
+      }
+    },
+    {
+      "contactId": 14,
+      "firstName": "Mark",
+      "lastName": "Zuks",
+      "address": "Shirdi",
+      "city": "Nashik",
+      "state": "Nashik",
+      "zip": 758458,
+      "phoneNum": 1111111111,
+      "email": "markzuk@gmail.com",
+      "addbookName": "AddressBook2",
+      "type": "friend",
+      "dateAdded": {
+        "year": 2020,
+        "month": 11,
+        "day": 6
+      }
+    }
+  ]
+}
