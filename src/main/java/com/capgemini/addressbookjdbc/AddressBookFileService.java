@@ -41,9 +41,9 @@ public class AddressBookFileService {
 		addressbookDBService = AddressbookDBService.getInstance();
 	}
 
-	public AddressBookFileService(List<Person> contactList) {
+	public AddressBookFileService(List<Person> list) {
 		this();
-		this.contactList = contactList;
+		this.contactList = list;
 	}
 
 	public void writeData(Map<String, AddressBook> stateAddressBookMap) {
@@ -167,19 +167,22 @@ public class AddressBookFileService {
 		return this.contactList;
 	}
 
-	public void updatePersonsPhone(String name, long phone) throws DatabaseException {
-		int result = addressbookDBService.updatePersonsData(name, phone);
-		if (result == 0)
-			return;
-		this.contactList = addressbookDBService.readData();
-		Person contact = this.getContact(name);
-		if (contact != null)
-			contact.setPhoneNumber(phone);
+	public void updatePersonsPhone(String name, long phone, IOService ioService) throws DatabaseException {
+		if (ioService.equals(IOService.DB_IO)) {
+			int result = addressbookDBService.updatePersonsData(name, phone);
+			if (result == 0)
+				return;
+		}
+		if (ioService.equals(IOService.REST_IO)) {
+			Person contact = this.getContact(name);
+			if (contact != null)
+				contact.setPhoneNumber(phone);
+		}
 	}
 
-	private Person getContact(String name) {
-		Person contact = this.contactList.stream().filter(contactData -> contactData.getName().equals(name)).findFirst()
-				.orElse(null);
+	public Person getContact(String name) {
+		Person contact = this.contactList.stream().filter(contactData -> contactData.getName().equalsIgnoreCase(name))
+				.findFirst().orElse(null);
 		return contact;
 	}
 

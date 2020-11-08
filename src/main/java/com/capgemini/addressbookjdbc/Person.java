@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.util.Objects;
 
 public class Person {
-	private int contactId;
+	private int id;
 	private String firstName;
 	private String lastName;
 	private String address;
@@ -18,12 +18,12 @@ public class Person {
 	private String type;
 	private LocalDate dateAdded;
 
-	public int getContactId() {
-		return contactId;
+	public int getId() {
+		return id;
 	}
 
-	public void setContactId(int contactId) {
-		this.contactId = contactId;
+	public void setId(int contactId) {
+		this.id = contactId;
 	}
 
 	public String getAddbookName() {
@@ -57,7 +57,7 @@ public class Person {
 		this.phoneNum = phoneNum;
 		this.email = email;
 	}
-	
+
 	public Person(String firstName, String lastName, String address, String city, String state, int zip, long phoneNum,
 			String email, LocalDate dateAdded) {
 		this(firstName, lastName, address, city, state, zip, phoneNum, email);
@@ -67,7 +67,7 @@ public class Person {
 	public Person(int contactId, String firstName, String lastName, String address, String city, String state, int zip,
 			long phoneNum, String email, String addbookName, String type) {
 		this(firstName, lastName, address, city, state, zip, phoneNum, email);
-		this.contactId = contactId;
+		this.id = contactId;
 		this.addbookName = addbookName;
 		this.type = type;
 	}
@@ -156,7 +156,7 @@ public class Person {
 
 	@Override
 	public String toString() {
-		String details = contactId + "   " + firstName + "   " + lastName + "   " + address + "   " + city + "   "
+		String details = id + "   " + firstName + "   " + lastName + "   " + address + "   " + city + "   "
 				+ state + "   " + zip + "   " + phoneNum + "   " + email + "   " + addbookName + "   " + type + "   "
 				+ dateAdded + "   " + "\n";
 		return details;
@@ -171,7 +171,7 @@ public class Person {
 			Person person = (Person) object;
 			String name = this.firstName + this.lastName;
 			result = (name).equals(person.getFirstName() + person.getLastName())
-					&& (this.contactId == person.getContactId());
+					&& (this.id == person.getId());
 		}
 
 		return result;
@@ -179,7 +179,7 @@ public class Person {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(contactId, firstName, lastName, phoneNum);
+		return Objects.hash(id, firstName, lastName, phoneNum);
 	}
 
 }

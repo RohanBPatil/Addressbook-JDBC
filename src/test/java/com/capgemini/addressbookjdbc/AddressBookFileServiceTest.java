@@ -39,7 +39,7 @@ class AddressBookFileServiceTest {
 	 */
 	@Test
 	public void givenNewDataForContact_WhenUpdated_ShouldBeInSync() throws DatabaseException {
-		addressBookFileService.updatePersonsPhone("abc bca", 0000000000);
+		addressBookFileService.updatePersonsPhone("abc bca", 0000000000, IOService.DB_IO);
 		addressBookFileService.readContactData(IOService.DB_IO);
 		boolean result = addressBookFileService.checkContactDataSync("abc bca");
 		assertEquals(true, result);

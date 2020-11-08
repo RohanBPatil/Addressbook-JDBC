@@ -5,10 +5,10 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import com.capgemini.addressbookjdbc.AddressBookFileService.IOService;
 import com.google.gson.Gson;
 
 import io.restassured.RestAssured;
@@ -84,6 +84,33 @@ class AddressBookJSONFileServiceTest {
 		});
 		long entries = addressBookFileService.countEntries();
 		assertEquals(18, entries);
+	}
+
+	/**
+	 * updating phone number of person in JSON server as well as application memory
+	 * 
+	 * @param name
+	 * @param phone
+	 * @return
+	 * @throws DatabaseException
+	 */
+	private Response updatePhone(String name, long phone) throws DatabaseException {
+		Person[] arrayOfContact = getContactList();
+		AddressBookFileService addressbookService = new AddressBookFileService(Arrays.asList(arrayOfContact));
+		addressbookService.updatePersonsPhone(name, phone, IOService.REST_IO);
+		Person contactToUpdate = addressbookService.getContact(name);
+		String contactJson = new Gson().toJson(contactToUpdate);
+		RequestSpecification request = RestAssured.given();
+		request.header("Content-Type", "application/json");
+		request.body(contactJson);
+		return request.put("/contacts/" + contactToUpdate.getId());
+
+	}
+
+	@Test
+	public void givenMultipleEmployees_WhenUpdatedSalary_ShouldSyncWithDB() throws DatabaseException {
+		int statusCode = updatePhone("Joe Bidden", 8888855555L).getStatusCode();
+		assertEquals(200, statusCode);
 	}
 
 }
